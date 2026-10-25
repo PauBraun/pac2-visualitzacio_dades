@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ca"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rendiment de cereal per país · Beeswarm</title><style>
+:root{--bg:#f7f5ee;--ink:#1f2a1f;--mute:#5f6b5f;--line:#d9d6c8;--card:#fffefb;--accent:#2f6b3a;--hl:#e4572e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 18px 60px}
+nav{font-size:14px;margin-bottom:18px}nav a{color:var(--accent);text-decoration:none;margin-right:14px}nav a:hover{text-decoration:underline}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.2;margin:.2em 0 .3em}
+.lead{font-size:18px;color:var(--ink);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.meta{font-size:13.5px;color:var(--mute);margin-top:14px}
+.meta b{color:var(--ink)}
+svg{width:100%;height:auto;display:block}
+.tip{position:fixed;pointer-events:none;background:#1f2a1f;color:#fff;padding:6px 9px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .08s;z-index:9}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.legend button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.legend button[aria-pressed=false]{opacity:.38}
+.sw{width:11px;height:11px;border-radius:50%;display:inline-block}
+.axis text{font-size:12px;fill:var(--mute)}.axis path,.axis line{stroke:var(--line)}
+footer{margin-top:28px;font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+a{color:var(--accent)}
+</style></head>
+<body><main>
+<nav><a href="index.html">Inici</a> <a href="dot-density.html">Dot density</a> <a href="small-multiples.html">Small multiples</a> <a href="beeswarm.html" style="font-weight:700">Beeswarm</a></nav>
+<h1>Quant cereal produeix cada país per hectàrea?</h1>
+<p class="lead">El 2016, la mediana d’Europa (4.909 kg/ha) era 3,6 vegades la d’Àfrica (1.356 kg/ha).</p>
+<div class="card"><svg id="bs"></svg></div>
+<p class="meta"><b>Com es llegeix:</b> cada punt és un país (n = 174); com més a la dreta, més quilos de cereal per hectàrea. Els punts es reparteixen en vertical només per no solapar-se: <b>l’alçada no vol dir res</b>. La línia discontínua és la mediana de cada continent. Espanya, en taronja, ocupa la posició 73 de 174. <br><b>Fora d’escala (més de 10.000 kg/ha):</b> Kuwait, Sant Vicent i les Grenadines, Emirats Àrabs Units; són valors atípics que distorsionarien l’eix. <br><b>Dades:</b> Rendiment de cereals (kg per hectàrea collida), Banc Mundial (WDI), any 2016, que és l’últim any disponible en aquest fitxer. El cereal inclou blat, arròs, blat de moro, ordi, civada, sègol, mill i sorgo, de manera que el valor depèn també de quin cereal es cultiva.</p>
+<footer>PAC 2 · Visualització de dades · Pau Braun Arañó · UOC</footer>
+</main>
+<div class="tip" id="tip"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+const D={"regions":[{"name":"Europa","median":4909,"n":38,"p":[["Albania",4716,false],["Austria",7245,false],["Belarus",3208,false],["Belgium",6985,false],["Bosnia and Herzegovina",5192,false],["Bulgaria",4818,false],["Croatia",6742,false],["Czech Republic",6317,false],["Denmark",6222,false],["Estonia",2658,false],["Finland",3574,false],["France",5687,false],["Germany",7182,false],["Greece",4145,false],["Hungary",5099,false],["Ireland",8223,false],["Italy",5599,false],["Latvia",3828,false],["Lithuania",3853,false],["Luxembourg",5000,false],["Macedonia, FYR",3859,false],["Malta",4745,false],["Moldova",3197,false],["Montenegro",3262,false],["Netherlands",7777,false],["Norway",4608,false],["Poland",4000,false],["Portugal",4422,false],["Romania",3971,false],["Russian Federation",2650,false],["Serbia",6174,false],["Slovak Republic",6430,false],["Slovenia",6464,false],["Espanya",3430,true],["Sweden",5438,false],["Switzerland",5133,false],["Ukraine",4652,false],["United Kingdom",7023,false]]},{"name":"Amèrica del Sud","median":4190,"n":12,"p":[["Argentina",5096,false],["Bolivia",2092,false],["Brazil",4181,false],["Chile",6858,false],["Colombia",4192,false],["Ecuador",3576,false],["Guyana",3516,false],["Paraguay",4426,false],["Peru",4188,false],["Suriname",4433,false],["Uruguay",4940,false],["Venezuela, RB",3427,false]]},{"name":"Àsia","median":3102,"n":44,"p":[["Afghanistan",1982,false],["Armenia",3076,false],["Azerbaijan",3005,false],["Bangladesh",4629,false],["Bhutan",3410,false],["Brunei Darussalam",844,false],["Cambodia",3460,false],["China",6029,false],["Cyprus",2191,false],["Georgia",2517,false],["Hong Kong SAR, China",2000,false],["India",2993,false],["Indonesia",5406,false],["Iran, Islamic Rep.",2166,false],["Iraq",3101,false],["Israel",4970,false],["Japan",4976,false],["Jordan",1531,false],["Kazakhstan",1348,false],["Korea, Dem. People’s Rep.",4083,false],["Korea, Rep.",6795,false],["Kyrgyz Republic",3104,false],["Lao PDR",4627,false],["Lebanon",3013,false],["Malaysia",3226,false],["Maldives",2446,false],["Mongolia",1279,false],["Myanmar",3607,false],["Nepal",2605,false],["Oman",5690,false],["Pakistan",3064,false],["Philippines",3529,false],["Qatar",4693,false],["Saudi Arabia",5243,false],["Sri Lanka",3897,false],["Syrian Arab Republic",1615,false],["Tajikistan",3349,false],["Thailand",3032,false],["Turkey",3105,false],["Turkmenistan",1076,false],["Uzbekistan",4613,false],["Vietnam",5448,false],["West Bank and Gaza",1808,false],["Yemen, Rep.",995,false]]},{"name":"Amèrica del Nord","median":2746,"n":21,"p":[["Antigua and Barbuda",1592,false],["Bahamas, The",9339,false],["Barbados",2849,false],["Belize",3165,false],["Canada",3909,false],["Costa Rica",4027,false],["Cuba",2939,false],["Dominica",1696,false],["Dominican Republic",4761,false],["El Salvador",2746,false],["Grenada",1007,false],["Guatemala",2152,false],["Haiti",1013,false],["Honduras",1748,false],["Jamaica",1090,false],["Mexico",3749,false],["Nicaragua",1768,false],["Panama",2570,false],["Puerto Rico",3192,false],["Trinidad and Tobago",1481,false],["United States",8143,false]]},{"name":"Oceania","median":2546,"n":8,"p":[["Australia",2074,false],["Fiji",3018,false],["Micronesia, Fed. Sts.",1646,false],["New Caledonia",3832,false],["New Zealand",8384,false],["Papua New Guinea",4738,false],["Solomon Islands",1657,false],["Vanuatu",612,false]]},{"name":"Àfrica","median":1356,"n":51,"p":[["Algeria",1561,false],["Angola",935,false],["Benin",1456,false],["Botswana",453,false],["Burkina Faso",1181,false],["Burundi",1520,false],["Cabo Verde",178,false],["Cameroon",1644,false],["Central African Republic",880,false],["Chad",845,false],["Comoros",1356,false],["Congo, Dem. Rep.",772,false],["Congo, Rep.",828,false],["Cote d'Ivoire",2134,false],["Djibouti",1926,false],["Egypt, Arab Rep.",7114,false],["Eritrea",414,false],["Ethiopia",2484,false],["Gabon",1604,false],["Gambia, The",841,false],["Ghana",1842,false],["Guinea",1180,false],["Guinea-Bissau",1426,false],["Kenya",1391,false],["Lesotho",508,false],["Liberia",1322,false],["Libya",715,false],["Madagascar",3920,false],["Malawi",1347,false],["Mali",1608,false],["Mauritania",1222,false],["Mauritius",3455,false],["Morocco",936,false],["Mozambique",824,false],["Namibia",453,false],["Niger",530,false],["Nigeria",1444,false],["Rwanda",1522,false],["Sao Tome and Principe",2098,false],["Senegal",1349,false],["Sierra Leone",1889,false],["South Africa",3810,false],["South Sudan",1512,false],["Sudan",685,false],["Swaziland",1138,false],["Tanzania",1541,false],["Togo",1131,false],["Tunisia",1542,false],["Uganda",1906,false],["Zambia",2418,false],["Zimbabwe",580,false]]}]};
+const loc=d3.formatLocale({decimal:",",thousands:".",grouping:[3],currency:["","€"]});
+const fmt=loc.format(",.0f");
+const tip=document.getElementById("tip");
+function showTip(ev,html){tip.innerHTML=html;tip.style.opacity=1;tip.style.left=(ev.clientX+14)+"px";tip.style.top=(ev.clientY+14)+"px"}
+function hideTip(){tip.style.opacity=0}
+
+const W=900,rowH=112,m={l:165,r:24,t:10,b:44};
+const H=m.t+m.b+rowH*D.regions.length;
+const svg=d3.select("#bs").attr("viewBox",`0 0 ${W} ${H}`).attr("role","img").attr("aria-label","Rendiment de cereal per país el 2016, agrupat per continent");
+const x=d3.scaleLinear().domain([0,10000]).range([m.l,W-m.r]);
+svg.append("g").attr("class","axis").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(10).tickFormat(fmt).tickSize(-(H-m.t-m.b)))
+  .select(".domain").remove();
+svg.append("text").attr("x",(m.l+W-m.r)/2).attr("y",H-8).attr("text-anchor","middle").attr("font-size",13).attr("fill","#5f6b5f").text("Rendiment de cereal, 2016 (kg per hectàrea)");
+const col=d3.scaleOrdinal().domain(D.regions.map(r=>r.name)).range(["#2f6b3a","#6b8e23","#b5651d","#7b2d5f","#3b7ea1","#c9a227"]);
+D.regions.forEach((r,i)=>{
+  const cy=m.t+rowH*i+rowH/2;
+  const nodes=r.p.map(d=>({name:d[0],v:d[1],es:d[2],x:x(d[1]),y:0}));
+  const sim=d3.forceSimulation(nodes).force("x",d3.forceX(d=>x(d.v)).strength(1)).force("y",d3.forceY(0).strength(.06)).force("c",d3.forceCollide(4.6)).stop();
+  for(let k=0;k<300;k++)sim.tick();
+  const g=svg.append("g").attr("transform",`translate(0,${cy})`);
+  g.append("line").attr("x1",m.l).attr("x2",W-m.r).attr("y1",rowH/2).attr("y2",rowH/2).attr("stroke","#d9d6c8");
+  svg.append("text").attr("x",m.l-14).attr("y",cy-4).attr("text-anchor","end").attr("font-weight",700).attr("font-size",14).text(r.name);
+  svg.append("text").attr("x",m.l-14).attr("y",cy+12).attr("text-anchor","end").attr("font-size",12).attr("fill","#5f6b5f").text(`${r.n} països`);
+  g.append("line").attr("x1",x(r.median)).attr("x2",x(r.median)).attr("y1",-rowH/2+6).attr("y2",rowH/2-6).attr("stroke","#1f2a1f").attr("stroke-dasharray","3 3").attr("opacity",.55);
+  g.append("text").attr("x",x(r.median)+4).attr("y",-rowH/2+14).attr("font-size",11.5).attr("fill","#1f2a1f").text(`mediana ${fmt(r.median)}`);
+  g.selectAll("circle").data(nodes).join("circle").attr("cx",d=>d.x).attr("cy",d=>Math.max(-rowH/2+22,Math.min(rowH/2-6,d.y)))
+    .attr("r",d=>d.es?6:4.2).attr("fill",d=>d.es?"#e4572e":col(r.name)).attr("fill-opacity",d=>d.es?1:.8)
+    .attr("stroke",d=>d.es?"#1f2a1f":"#fff").attr("stroke-width",d=>d.es?1.5:.7)
+    .on("mousemove",(ev,d)=>showTip(ev,`<b>${d.name}</b><br>${fmt(d.v)} kg/ha`)).on("mouseleave",hideTip);
+  const es=nodes.find(d=>d.es);
+  if(es){g.append("text").attr("x",es.x).attr("y",Math.max(-rowH/2+22,Math.min(rowH/2-6,es.y))-10).attr("text-anchor","middle").attr("font-weight",700).attr("font-size",12.5).attr("fill","#e4572e").attr("paint-order","stroke").attr("stroke","#fffefb").attr("stroke-width",4).text("Espanya");}
+});
+
+</script></body></html>

@@ -1,0 +1,34 @@
+<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PAC 2 Visualització de dades</title><style>
+:root{--bg:#f7f5ee;--ink:#1f2a1f;--mute:#5f6b5f;--line:#d9d6c8;--card:#fffefb;--accent:#2f6b3a;--hl:#e4572e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 18px 60px}
+nav{font-size:14px;margin-bottom:18px}nav a{color:var(--accent);text-decoration:none;margin-right:14px}nav a:hover{text-decoration:underline}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.2;margin:.2em 0 .3em}
+.lead{font-size:18px;color:var(--ink);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.meta{font-size:13.5px;color:var(--mute);margin-top:14px}
+.meta b{color:var(--ink)}
+svg{width:100%;height:auto;display:block}
+.tip{position:fixed;pointer-events:none;background:#1f2a1f;color:#fff;padding:6px 9px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .08s;z-index:9}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.legend button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.legend button[aria-pressed=false]{opacity:.38}
+.sw{width:11px;height:11px;border-radius:50%;display:inline-block}
+.axis text{font-size:12px;fill:var(--mute)}.axis path,.axis line{stroke:var(--line)}
+footer{margin-top:28px;font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+a{color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.grid a{text-decoration:none;color:inherit}.grid .card:hover{border-color:var(--accent)}
+.grid h2{font-size:18px;margin:0 0 6px;color:var(--accent)}.grid p{margin:0;font-size:14.5px;color:var(--mute)}</style></head>
+<body><main>
+<h1>PAC 2 Visualització de dades</h1>
+<div class="grid">
+<a href="dot-density.html"><div class="card"><h2>1 · Dot density map</h2><p>Conreus llenyosos de Catalunya, 2024. Cada punt són 50 ha.</p></div></a>
+<a href="small-multiples.html"><div class="card"><h2>2 · Small multiples</h2><p>Fertilitzant per hectàrea en nou països, 1961–2023.</p></div></a>
+<a href="beeswarm.html"><div class="card"><h2>3 · Beeswarm plot</h2><p>Rendiment de cereal de 174 països, 2016, per continent.</p></div></a>
+</div>
+<p class="meta"><b>Origen de dades filtrat:</b> <a href="data/cultius_net.csv">cultius_net.csv</a> · <a href="data/dot_density_2024_municipi_categoria.csv">dot_density_2024_municipi_categoria.csv</a> · <a href="data/fertilizante_paneles.csv">fertilizante_paneles.csv</a> · <a href="data/cereal_paises.csv">cereal_paises.csv</a></p>
+<footer>PAC 2 · Visualització de dades · Pau Braun Arañó · UOC</footer></main></body></html>
