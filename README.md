@@ -18,9 +18,9 @@ dot-density.html            visualització 1
 small-multiples.html        visualització 2
 beeswarm.html               visualització 3
 data/
-  export.csv                dades filtrades del dot density
-  fertilizer-use-per-hectare-of-cropland.csv   dades filtrades dels small multiples
-  data.csv                  dades filtrades del beeswarm
+  cultius_llenyosos_catalunya.csv        dades filtrades del dot density
+  fertilitzant_per_hectarea_paisos.csv   dades filtrades dels small multiples
+  rendiment_cereal_paisos.csv            dades filtrades del beeswarm
 README.md
 ```
 
@@ -28,25 +28,28 @@ Cada pàgina porta les seves dades incrustades al propi HTML, així que no depè
 
 ## Origen de les dades
 
-Els fitxers de `data/` conserven el **nom del fitxer original** que es va descarregar de cada font, però contenen la versió **filtrada** que fa servir cada visualització.
+Els fitxers de `data/` contenen la versió **filtrada** que fa servir cada visualització. A cada font s'indica el nom del fitxer original que es va descarregar.
 
-### 1. Conreus llenyosos de Catalunya (`export.csv`)
+### 1. Conreus llenyosos de Catalunya (`cultius_llenyosos_catalunya.csv`)
 - **Font:** *Superfícies municipals dels cultius llenyosos a Catalunya*, dades obertes de la Generalitat de Catalunya, publicades a [datos.gob.es](https://datos.gob.es/ca/catalogo/a09002970-superficies-municipales-de-los-cultivos-lenosos-en-cataluna).
+- **Fitxer original:** `export.csv`.
 - **Període:** 2015–2024. El mapa mostra el 2024.
 - **Límits municipals i comarcals:** [ArnauInes/geometries_cat_bcn_2024](https://github.com/ArnauInes/geometries_cat_bcn_2024), que parteix de dades de l'Instituto Geográfico Nacional. S'han fet servir els límits de municipis i comarques.
 
-### 2. Fertilitzant per hectàrea (`fertilizer-use-per-hectare-of-cropland.csv`)
+### 2. Fertilitzant per hectàrea (`fertilitzant_per_hectarea_paisos.csv`)
 - **Font:** *Fertilizer use per hectare of cropland* (kg/ha), FAO, a través d'[Our World in Data](https://ourworldindata.org/grapher/fertilizer-use-per-hectare-of-cropland) (CC BY).
+- **Fitxer original:** `fertilizer-use-per-hectare-of-cropland.csv`.
 - **Període:** 1961–2023.
 
-### 3. Rendiment de cereal (`data.csv`)
+### 3. Rendiment de cereal (`rendiment_cereal_paisos.csv`)
 - **Font:** *Cereal yield (kg per hectare)*, Banc Mundial, World Development Indicators (indicador `AG.YLD.CREL.KG`), [data.worldbank.org](https://data.worldbank.org/indicator/AG.YLD.CREL.KG).
+- **Fitxer original:** `data.csv`.
 - **Període del fitxer:** 1961–2016. Es mostra el 2016, l'últim any disponible en aquest fitxer.
 - El cereal inclou blat, arròs, blat de moro, ordi, civada, sègol, mill i sorgo, de manera que el valor també depèn de quin cereal es cultiva en cada país.
 
 ## Filtrat i preparació de les dades
 
-### Dot density (`export.csv`)
+### Dot density (`cultius_llenyosos_catalunya.csv`)
 1. **Files duplicades.** Entre 2015 i 2023 cada fila del fitxer original apareixia repetida de manera exacta, i s'han eliminat. Sense aquest pas, les superfícies d'aquests anys quedarien gairebé duplicades.
 2. **Vivers i arbre ornamental.** S'exclou el grup *Vivers*, perquè fa servir una altra unitat (plantes per hectàrea) i no es pot sumar amb la resta.
 3. **Superfície.** La columna `ha` és la suma de les quatre superfícies del fitxer original: secà i regadiu, en producció i no productiu.
@@ -54,9 +57,9 @@ Els fitxers de `data/` conserven el **nom del fitxer original** que es va descar
 5. **Categories de conreu.** Olivera, Vinya, Ametller, Avellaner, Cítrics, Altres fruiters (la resta del grup de fruiters) i Altres llenyosos.
 6. **Punts.** El 2024 hi ha 198.790 ha en 761 municipis. Cada municipi rep un punt per cada 50 ha de cada categoria; la fracció sobrant s'arrodoneix amb un sorteig, de manera que els municipis petits no desapareixen. Els punts es reparteixen a l'atzar dins del polígon del municipi (llavor fixa, 42, perquè el resultat sigui reproduïble).
 
-Columnes de `export.csv`: `codi_municipi_6`, `nom_municipi`, `comarca_corregida`, `year`, `grup`, `cultiu`, `categoria`, `ha`.
+Columnes de `cultius_llenyosos_catalunya.csv`: `codi_municipi_6`, `nom_municipi`, `comarca_corregida`, `year`, `grup`, `cultiu`, `categoria`, `ha`.
 
-### Small multiples (`fertilizer-use-per-hectare-of-cropland.csv`)
+### Small multiples (`fertilitzant_per_hectarea_paisos.csv`)
 1. S'han mantingut només països: s'han descartat les regions FAO, agregats com la UE o el món, i països desapareguts (URSS, Iugoslàvia, Txecoslovàquia, entre d'altres). Queden 199 països.
 2. S'han exclòs les Illes Fèroe, amb valors extrems de fins a 17.000 kg/ha.
 3. Els nou països dels quadres són Espanya, Països Baixos, Estats Units, Brasil, Xina, Índia, Egipte, Ucraïna i Nigèria. S'han triat per contrast i no són una mostra representativa. El fitxer de `data/` conté només aquests nou.
@@ -65,7 +68,7 @@ Columnes de `export.csv`: `codi_municipi_6`, `nom_municipi`, `comarca_corregida`
 
 Columnes: `pais`, `codi`, `year`, `kg_ha`.
 
-### Beeswarm (`data.csv`)
+### Beeswarm (`rendiment_cereal_paisos.csv`)
 1. S'han conservat només els països, amb el mateix criteri de codis ISO que el fitxer de fertilitzant, i s'han descartat els agregats del Banc Mundial (grups de renda, regions, OCDE, etc.).
 2. S'ha afegit la columna `region` (continent) a partir del codi de país.
 3. La columna `valor_extremo` marca els valors per sobre de 10.000 kg/ha. El 2016 són tres països: Kuwait, Sant Vicent i les Grenadines i els Emirats Àrabs Units. **No apareixen al gràfic**, perquè distorsionarien l'eix, però continuen al fitxer.
