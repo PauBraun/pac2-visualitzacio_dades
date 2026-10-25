@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ca"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Conreus llenyosos de Catalunya · Dot density</title><style>
+<title>Distribució de conreus llenyosos a Catalunya</title><style>
 :root{--bg:#f7f5ee;--ink:#1f2a1f;--mute:#5f6b5f;--line:#d9d6c8;--card:#fffefb;--accent:#2f6b3a;--hl:#e4572e}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -23,9 +23,8 @@ footer{margin-top:28px;font-size:13px;color:var(--mute);border-top:1px solid var
 a{color:var(--accent)}
 </style></head>
 <body><main>
-<nav><a href="index.html">Inici</a> <a href="dot-density.html" style="font-weight:700">Dot density</a> <a href="small-multiples.html">Small multiples</a> <a href="beeswarm.html">Beeswarm</a></nav>
-<h1>On creixen els conreus llenyosos de Catalunya?</h1>
-<p class="lead">L’olivera ocupa el 31% de la superfície llenyosa, però cada zona té el seu conreu: vinya a l’Alt Penedès, fruiters al Segrià, cítrics a l’Ebre.</p>
+<nav><a href="index.html">Inici</a> <a href="dot-density.html" style="font-weight:700">Dot density (Conreus llenyosos Catalunya)</a> <a href="small-multiples.html">Small multiples (Ús de fertilitzant)</a> <a href="beeswarm.html">Beeswarm (Producció de cereals)</a></nav>
+<h1>Distribució de conreus llenyosos a Catalunya</h1>
 <div class="legend" id="legend" aria-label="Filtra per conreu"></div>
 <div class="card"><svg id="map"></svg></div>
 <p class="meta"><b>Com es llegeix:</b> cada punt representa 50 ha de conreu llenyós; el color indica el conreu. Clica la llegenda per aïllar un conreu. La posició exacta de cada punt dins del municipi és aleatòria; el que és real és la quantitat de punts per municipi. <br><b>Dades:</b> Superfícies municipals dels conreus llenyosos a Catalunya, any 2024 (Generalitat de Catalunya, dades obertes; 761 municipis, 198.790 ha, sense viver ni arbre ornamental). Límits municipals: Institut Geogràfic Nacional, des de <a href="https://github.com/ArnauInes/geometries_cat_bcn_2024">ArnauInes/geometries_cat_bcn_2024</a>. Neteja: files duplicades eliminades i comarca assignada segons els límits oficials.</p>

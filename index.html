@@ -22,7 +22,9 @@ a{color:var(--accent)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
 .grid a{text-decoration:none;color:inherit}.grid .card:hover{border-color:var(--accent)}
-.grid h2{font-size:18px;margin:0 0 6px;color:var(--accent)}.grid p{margin:0;font-size:14.5px;color:var(--mute)}</style></head>
+.grid h2{font-size:18px;margin:0 0 6px;color:var(--accent)}.grid p{margin:0;font-size:14.5px;color:var(--mute)}
+.fonts{margin-top:22px;font-size:14.5px}.fonts b{display:block;margin-bottom:4px}
+.fonts ul{margin:0;padding-left:20px}.fonts li{margin:2px 0}</style></head>
 <body><main>
 <h1>PAC 2 Visualització de dades</h1>
 <div class="grid">
@@ -30,5 +32,10 @@ a{color:var(--accent)}
 <a href="small-multiples.html"><div class="card"><h2>2 · Small multiples</h2><p>Fertilitzant per hectàrea en nou països, 1961–2023.</p></div></a>
 <a href="beeswarm.html"><div class="card"><h2>3 · Beeswarm plot</h2><p>Rendiment de cereal de 174 països, 2016, per continent.</p></div></a>
 </div>
-<p class="meta"><b>Origen de dades filtrat:</b> <a href="data/cultius_net.csv">cultius_net.csv</a> · <a href="data/dot_density_2024_municipi_categoria.csv">dot_density_2024_municipi_categoria.csv</a> · <a href="data/fertilizante_paneles.csv">fertilizante_paneles.csv</a> · <a href="data/cereal_paises.csv">cereal_paises.csv</a></p>
+<div class="fonts"><b>Origen de dades filtrat:</b>
+<ul>
+<li><a href="data/export.csv">export.csv</a></li>
+<li><a href="data/fertilizer-use-per-hectare-of-cropland.csv">fertilizer-use-per-hectare-of-cropland.csv</a></li>
+<li><a href="data/data.csv">data.csv</a></li>
+</ul></div>
 <footer>PAC 2 · Visualització de dades · Pau Braun Arañó · UOC</footer></main></body></html>
